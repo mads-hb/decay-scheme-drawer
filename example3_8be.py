@@ -1,4 +1,4 @@
-from decay_scheme_drawer import *
+from decay_scheme import *
 
 p7li = nuclide(0, "p+7Li")
 p7li_gs = level(17.25, '3/2', '-', lw=2.0, text_below='$\mathrm{p+^{7}Li}$')

@@ -1,4 +1,4 @@
-from decay_scheme_drawer import *
+from decay_scheme import *
 
 b12 = nuclide(0, "12B")
 b12_gs = level(13.37, '1', '+', lw=2.0, text_below='$\mathrm{^{12}B}$', energy_format_string="%2.2f")

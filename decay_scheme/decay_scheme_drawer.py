@@ -1,6 +1,5 @@
 import os
 
-from decay_scheme_classes import *
 import numpy as np
 import matplotlib as mpl
 from matplotlib.path import Path
@@ -30,10 +29,10 @@ fig = plt.figure(dpi=300, constrained_layout=True)
 ax = plt.gca()
 rend = fig.canvas.get_renderer()
 
-arrowhead_vertices = np.loadtxt('arrowhead_vertices.dat')
+arrowhead_vertices = np.loadtxt('data/arrowhead_vertices.dat')
 arrowhead_vertices[:, 0] = arrowhead_vertices[:, 0] - np.min(arrowhead_vertices[:, 0])
 arrowhead_vertices[:, 1] = arrowhead_vertices[:, 1] - np.mean(arrowhead_vertices[:, 1]) - 0.05
-arrowhead_codes = np.loadtxt('arrowhead_codes.dat')
+arrowhead_codes = np.loadtxt('data/arrowhead_codes.dat')
 arrowhead = Path(arrowhead_vertices, arrowhead_codes)
 
 def get_text_field_dims(text_field):

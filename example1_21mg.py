@@ -1,4 +1,4 @@
-from decay_scheme_drawer import *
+from decay_scheme import *
 
 # Uncomment the following print statements to see "the API"
 #print("A decay_scheme has the following fields:")
