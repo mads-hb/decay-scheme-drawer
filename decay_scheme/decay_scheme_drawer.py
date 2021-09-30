@@ -206,9 +206,10 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
                 plt.hlines(y1 - 2*mec2, x1, x2, ls=(1, (3, 1.3)), lw=1.0, color=level.color)
                 plt.text(x2 + bracket_offset + level.QEC_x_adjust, y1 - mec2 + level.QEC_y_adjust, "}", fontsize=16, va='center', ha='left')
                 QEC_text = plt.text(x2 + QEC_text_offset + level.QEC_x_adjust, y1 - mec2 + level.QEC_y_adjust, "$2m_{\mathrm{e}}c^2$", va='center', ha='left')
-                adjust_right(QEC_text, nuclide_to_inch, MeV_to_inch, bracket_offset+QEC_text_offset)
-                QEC_text_width, h = get_text_field_dims(QEC_text)
-                QEC = True
+                if nuclide.index == decay_scheme.num_nuclides - 1:
+                    adjust_right(QEC_text, nuclide_to_inch, MeV_to_inch, bracket_offset+QEC_text_offset)
+                # QEC_text_width, h = get_text_field_dims(QEC_text)
+                # QEC = True
             if level.draw_reference_line:
                 plt.hlines(y1, -hor_padding, total_width - hor_padding, ls=(1, (3, 1.3)), lw=0.5, color=level.color)
             if level.text_below:
@@ -224,23 +225,43 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
                     above_text = plt.text(x1 + 0.5, y2 + above_text_offset + level.text_above_x_adjust, level.text_above + level.text_above_y_adjust, va='bottom', ha='center')
                     if level.upper_energy == max_e:
                         adjust_top(above_text, nuclide_to_inch, MeV_to_inch, above_text_offset)
-        padding += hor_padding + QEC*(QEC_text_width + bracket_offset + QEC_text_offset)
+        padding += hor_padding# + QEC*(QEC_text_width + bracket_offset + QEC_text_offset)
     decays = decay_scheme.decays
     for decay in decays:
         # this part should be simple, but matplotlib's standard arrows are ugly because their heads are drawn relative to data coordinates; "fancyarrowpatches" do not have this problem, but the variety of head shapes is limitied... so we draw the arrows ourselves
         # may the user ImportanceOfBeingErnest be prosperous and succesful and have many beautiful children! https://stackoverflow.com/questions/53227057/size-distortion-when-rotating-custom-path-marker-in-matplotlib
-        x1 = decay.parent_nuclide.index * (1 + hor_padding)
-        y1 = decay.parent_level.energy - y_corr if decay.parent_level.energy > y_upper_excl else decay.parent_level.energy
-        x2 = decay.daughter_nuclide.index*(1 + hor_padding)
-        y2 = decay.daughter_level.energy - y_corr if decay.daughter_level.energy > y_upper_excl else decay.daughter_level.energy
+        pn = decay.parent_nuclide
+        pl = decay.parent_level
+        dn = decay.daughter_nuclide
+        dl = decay.daughter_level
+
+        x1 = pn.index * (1 + hor_padding)
+        y1 = 0.
+        if pl.many:
+            y1 = pl.energy + (pl.upper_energy - pl.energy)/2 - y_corr if pl.energy > y_upper_excl else pl.energy + (pl.upper_energy - pl.energy)/2
+        else:
+            y1 = pl.energy - y_corr if pl.energy > y_upper_excl else pl.energy
+        x2 = dn.index*(1 + hor_padding)
+        y2 = 0.
+        if dl.many:
+            y2 = dl.energy + (dl.upper_energy - dl.energy)/2 - y_corr if dl.energy > y_upper_excl else dl.energy + (dl.upper_energy - dl.energy)/2
+        else:
+            y2 = dl.energy - y_corr if dl.energy > y_upper_excl else dl.energy
 
         x1, y1, x2, y2 = calculate_arrow_offsets(x1, y1, x2, y2, nuclide_to_inch, MeV_to_inch)
 
         draw_arrow(x1, y1, x2, y2)
     decays_to_coordinates = decay_scheme.decays_to_coordinates
     for decay_to_coordinate in decays_to_coordinates:
-        x1 = decay_to_coordinate.parent_nuclide.index * (1 + hor_padding)
-        y1 = decay_to_coordinate.parent_level.energy - y_corr if decay_to_coordinate.parent_level.energy > y_upper_excl else decay_to_coordinate.parent_level.energy
+        pn = decay_to_coordinate.parent_nuclide
+        pl = decay_to_coordinate.parent_level
+
+        x1 = pn.index * (1 + hor_padding)
+        y1 = 0.
+        if pl.many:
+            y1 = pl.energy + (pl.upper_energy - pl.energy) / 2 - y_corr if pl.energy > y_upper_excl else pl.energy + (pl.upper_energy - pl.energy) / 2
+        else:
+            y1 = pl.energy - y_corr if pl.energy > y_upper_excl else pl.energy
         x2 = decay_to_coordinate.x
         y2 = decay_to_coordinate.y - y_corr if decay_to_coordinate.y > y_upper_excl else decay_to_coordinate.y
 
