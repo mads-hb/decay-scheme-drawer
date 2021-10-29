@@ -159,10 +159,11 @@ class level_connection:
 
 
 class freetext:
-    def __init__(self, text, x, y, va='center', ha='center'):
+    def __init__(self, text, x, y, va='center', ha='center', rotation=0.):
         self.text = text
         self.x = x
         self.y = y
         self.va = va
         self.ha = ha
+        self.rotation = rotation
 

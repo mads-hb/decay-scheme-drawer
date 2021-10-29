@@ -44,8 +44,8 @@ ds.add_decay(decay(b8, b8_gs, be8, be8_broad))
 ds.add_decay(decay(b8, b8_gs, be8, be8_166))
 ds.add_decay(decay(b8, b8_gs, be8, be8_169))
 
-ds.add_freetext(freetext('Direct $\mathrm{\\alpha+\\alpha}$', 0.8, 14.6 - 9.))
-ds.add_freetext(freetext('Resonant', 1.6, 18.15 - 9.))
+ds.add_freetext(freetext('Direct $\mathrm{\\alpha+\\alpha}$', 1.3, 14.6 - 9., rotation=-75.))
+ds.add_freetext(freetext('Resonant', 1.6, 17.9 - 9., rotation=10.))
 ds.add_freetext(freetext('$\mathrm{\\alpha}$', 2.35, 2.1))
 ds.add_freetext(freetext('$\mathrm{\\beta^{+},\,EC}$', 4.0, 15. - 9.))
 

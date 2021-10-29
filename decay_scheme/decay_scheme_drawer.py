@@ -287,7 +287,7 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
         plt.plot([x1, x2], [y1, y2], ls=(1, (3, 1.3)), lw=0.5, color=level1.color)
     freetexts = decay_scheme.freetexts
     for ftext in freetexts:
-        plt.text(ftext.x, ftext.y, ftext.text, va=ftext.va, ha=ftext.ha)
+        plt.text(ftext.x, ftext.y, ftext.text, va=ftext.va, ha=ftext.ha, rotation=ftext.rotation)
     if axes_on:
         hor_sizes = [hor_padding, bracket_offset, QEC_text_offset]
         hor_sizes_strs = ["hor_padding", "bracket_offset", "QEC_text_offset"]
