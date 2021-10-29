@@ -14,4 +14,4 @@ Suggestions for/contributions of examples are very welcome.
 
 **Example 3**
 
-![Example decay scheme 2](images/8be.jpg "Example decay scheme 3")
+![Example decay scheme 3](images/8be.png "Example decay scheme 3")
