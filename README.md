@@ -1,6 +1,8 @@
-# Decay Scheme Drawer
+# DecSD (Decay Scheme Drawer)
 
 Draw decay schemes easily by modifying the included examples.
+
+Suggestions for/contributions of examples are very welcome.
 
 **Example 1**
 
