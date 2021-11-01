@@ -13,14 +13,14 @@ for f in font_files:
     font_manager.FontManager.addfont(font_manager.fontManager, path=f)
 plt.rcParams.update({"font.family": "serif", "font.serif": "Linux Libertine O", "font.cursive": "Linux Libertine O", "font.sans-serif": "Linux Libertine O", "mathtext.fontset": "custom"})
 
-hor_padding = 0.3 # in units of length of nuclide's level lines
-ver_padding = 0.3 # in units of distance between 1 MeV-separated levels
+#hor_padding = 0.3 # in units of length of nuclide's level lines
+#ver_padding = 0.3 # in units of distance between 1 MeV-separated levels
 #nuclide_to_inch = 1. # figwidth
 #MeV_to_inch = 0.25 # figheight
 
 bracket_offset = 0.04
 QEC_text_offset = 0.2
-below_text_offset = 0.2
+below_text_offset = 0.07
 above_text_offset = 0.
 
 mec2 = 0.51099895000
@@ -122,7 +122,7 @@ def calculate_arrow_offsets(x1, y1, x2, y2, nuclide_to_inch, MeV_to_inch):
     return x1, y1, x2, y2
 
 
-def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, axes_on=False, nuclide_to_inch=1., MeV_to_inch=0.25, exclude_y=None, energy_format_string="%2.3f"):
+def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, axes_on=False, nuclide_to_inch=1., MeV_to_inch=0.25, exclude_y=None, energy_format_string="%2.3f", hor_padding=0.3, ver_padding=0.3):
     global_energy_format_string = energy_format_string
     found_index_zero = False
     for nuclide in decay_scheme:
@@ -175,33 +175,36 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
                 plt.fill([x1, x1, x2, x2], [y1, y2, y2, y1], color='silver', lw=0.)
             if not level.hide_energy_spin_parity:
                 e_string = energy_format_string % level.energy if level.energy != 0. else "0.0"
+                s_p_string = ""
+                if "(" in level.spin and "(" in level.parity:
+                    level.spin = level.spin[1:-1]
+                    level.parity = level.parity[1:-1]
+                    s_p_string = "$(%s^{%s})$" % (level.spin, level.parity)
+                else:
+                    s_p_string = "$%s^{%s}$" % (level.spin, level.parity)
                 if not level.broad and not level.many:
                     if not level.energy_spin_parity_below:
                         E_text = plt.text(x1 + level.energy_x_adjust, y1 + above_text_offset + level.energy_y_adjust, e_string, ha='left', va='bottom')
-                        plt.text(x2 + level.spin_parity_x_adjust, y1 + above_text_offset + level.spin_parity_y_adjust, "$%s^{%s}$" % (level.spin, level.parity), ha='right', va='bottom')
+                        plt.text(x2 + level.spin_parity_x_adjust, y1 + above_text_offset + level.spin_parity_y_adjust, s_p_string, ha='right', va='bottom')
                         if level.energy == max_e:
                             adjust_top(E_text, nuclide_to_inch, MeV_to_inch, above_text_offset)
                     else:
-                        E_text = plt.text(x1 + level.energy_x_adjust, y1 - below_text_offset + level.energy_y_adjust, e_string, ha='left', va='top')
-                        plt.text(x2 + level.spin_parity_x_adjust, y1 - below_text_offset + level.spin_parity_y_adjust, "$%s^{%s}$" % (level.spin, level.parity), ha='right', va='top')
+                        E_text = plt.text(x1 + level.energy_x_adjust, y1 - 0.25*below_text_offset/MeV_to_inch + level.energy_y_adjust, e_string, ha='left', va='top')
+                        plt.text(x2 + level.spin_parity_x_adjust, y1 - below_text_offset + level.spin_parity_y_adjust, s_p_string, ha='right', va='top')
                         if level.energy == min_e:
                             adjust_bottom(E_text, nuclide_to_inch, MeV_to_inch, below_text_offset)
                 elif level.broad:
                     upper_e_string = energy_format_string % level.energy
                     E_text = plt.text(x1 + level.upper_energy_x_adjust, y2 + above_text_offset + level.upper_energy_y_adjust, upper_e_string, ha='left', va='bottom')
-                    plt.text(x2 + level.spin_parity_x_adjust, y2 + above_text_offset + level.spin_parity_y_adjust, "$%s^{%s}$" % (level.spin, level.parity), ha='right', va='bottom')
+                    plt.text(x2 + level.spin_parity_x_adjust, y2 + above_text_offset + level.spin_parity_y_adjust, s_p_string, ha='right', va='bottom')
                     if level.upper_energy == max_e:
                         adjust_top(E_text, nuclide_to_inch, MeV_to_inch, above_text_offset)
                 elif level.many:
                     upper_e_string = energy_format_string % level.upper_energy
                     E_text = plt.text(x1 + level.upper_energy_x_adjust, y2 + above_text_offset + level.upper_energy_y_adjust, upper_e_string, ha='left', va='bottom')
-                    plt.text(x2 + level.upper_spin_parity_x_adjust, y2 + above_text_offset + level.upper_spin_parity_y_adjust, "$%s^{%s}$" % (level.upper_spin, level.upper_parity), ha='right', va='bottom')
+                    plt.text(x2 + level.upper_spin_parity_x_adjust, y2 + above_text_offset + level.upper_spin_parity_y_adjust, s_p_string, ha='right', va='bottom')
                     if level.upper_energy == max_e:
                         adjust_top(E_text, nuclide_to_inch, MeV_to_inch, above_text_offset)
-                    E_text = plt.text(x1 + level.energy_x_adjust, y1 - below_text_offset + level.energy_y_adjust, e_string, ha='left', va='top')
-                    plt.text(x2 + level.spin_parity_x_adjust, y1 - below_text_offset + level.spin_parity_y_adjust, "$%s^{%s}$" % (level.spin, level.parity), ha='right', va='top')
-                    if level.energy == min_e:
-                        adjust_bottom(E_text, nuclide_to_inch, MeV_to_inch, below_text_offset)
             if level.draw_QEC_level_below:
                 plt.hlines(y1 - 2*mec2, x1, x2, ls=(1, (3, 1.3)), lw=1.0, color=level.color)
                 plt.text(x2 + bracket_offset + level.QEC_x_adjust, y1 - mec2 + level.QEC_y_adjust, "}", fontsize=16, va='center', ha='left')
@@ -211,7 +214,7 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
                 # QEC_text_width, h = get_text_field_dims(QEC_text)
                 # QEC = True
             if level.draw_reference_line:
-                plt.hlines(y1, -hor_padding, total_width - hor_padding, ls=(1, (3, 1.3)), lw=0.5, color=level.color)
+                plt.hlines(y1, -hor_padding, total_width - hor_padding, ls=(1, (3, 1.3)), lw=0.5, color='k', zorder=-10)
             if level.text_below:
                 below_text = plt.text(x1 + 0.5 + level.text_below_x_adjust, y1 - below_text_offset + level.text_below_y_adjust, level.text_below, va='top', ha='center')
                 if level.energy == min_e:
