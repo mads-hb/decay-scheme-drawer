@@ -189,8 +189,8 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
                         if level.energy == max_e:
                             adjust_top(E_text, nuclide_to_inch, MeV_to_inch, above_text_offset)
                     else:
-                        E_text = plt.text(x1 + level.energy_x_adjust, y1 - 0.25*below_text_offset/MeV_to_inch + level.energy_y_adjust, e_string, ha='left', va='top')
-                        plt.text(x2 + level.spin_parity_x_adjust, y1 - below_text_offset + level.spin_parity_y_adjust, s_p_string, ha='right', va='top')
+                        E_text = plt.text(x1 + level.energy_x_adjust, y1 - 0.5*below_text_offset/MeV_to_inch + level.energy_y_adjust, e_string, ha='left', va='top')
+                        plt.text(x2 + level.spin_parity_x_adjust, y1 - 0.5*below_text_offset/MeV_to_inch + level.spin_parity_y_adjust, s_p_string, ha='right', va='top')
                         if level.energy == min_e:
                             adjust_bottom(E_text, nuclide_to_inch, MeV_to_inch, below_text_offset)
                 elif level.broad:
@@ -216,7 +216,7 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
             if level.draw_reference_line:
                 plt.hlines(y1, -hor_padding, total_width - hor_padding, ls=(1, (3, 1.3)), lw=0.5, color='k', zorder=-10)
             if level.text_below:
-                below_text = plt.text(x1 + 0.5 + level.text_below_x_adjust, y1 - below_text_offset + level.text_below_y_adjust, level.text_below, va='top', ha='center')
+                below_text = plt.text(x1 + 0.5 + level.text_below_x_adjust, y1 - 0.5*below_text_offset/MeV_to_inch + level.text_below_y_adjust, level.text_below, va='top', ha='center')
                 if level.energy == min_e:
                     adjust_bottom(below_text, nuclide_to_inch, MeV_to_inch, below_text_offset)
             if level.text_above:
