@@ -18,4 +18,8 @@ Suggestions for/contributions of examples are very welcome.
 
 **Example 4**
 
-Another take on the 21Mg decay scheme
+Another take on the 21Mg decay scheme: All levels reported in ENSDF jan. 2015
+
+**Example 5**
+Another take on the 21Mg decay scheme: Less demonstrative, more illustrative than example 1.
+![Example decay scheme 5](images/21mg_v3.png "Example decay scheme 5")
