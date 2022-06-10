@@ -42,6 +42,9 @@ li6.add_level(li6_d)
 
 ds.add_nuclide(li6)
 
+ds.add_freetext(freetext('84%', 1.13, 2.8, rotation=-74))
+ds.add_freetext(freetext('~1%', 1.14, 10.7, rotation=-22))
+
 #ds.add_freetext(freetext('$\Lsh$', 4.55, 3.7, rotation=180.))
 #ds.add_freetext(freetext('$\mathrm{α+n}; Q=735\,\mathrm{keV}$', 4.6, 3.45, ha='left'))
 
