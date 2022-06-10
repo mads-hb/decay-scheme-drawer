@@ -42,6 +42,6 @@ ds.add_decay(decay(n12, n12_gs, c12, c12_4))
 
 ds.add_freetext(freetext('$\mathrm{\\beta^{-}}$', 0.9, 12.))
 ds.add_freetext(freetext('$\mathrm{\\beta^{+},\,EC}$', 2.8, 15.))
-ds.add_freetext(freetext('$\mathrm{94.6\%}$', 2.6, 4.))
+ds.add_freetext(freetext('$\mathrm{94.6\%}$', 2.6, 4., color='tab:red'))
 
 draw_decay_scheme(ds, MeV_to_inch=0.15, no_save=True)

@@ -82,8 +82,8 @@ class UnsizedMarker(MarkerStyle):
         self._transform = transforms.IdentityTransform()
         self._path = path
 
-def draw_arrow(x1, y1, x2, y2):
-    plt.plot([x1, x2], [y1, y2], 'k-', lw=0.5)
+def draw_arrow(x1, y1, x2, y2, color):
+    plt.plot([x1, x2], [y1, y2], color=color, lw=0.5)
 
     r1 = np.array([x1, y1])
     r2 = np.array([x2, y2])
@@ -98,7 +98,7 @@ def draw_arrow(x1, y1, x2, y2):
 
     tr = transforms.Affine2D().rotate(angle)
     m = UnsizedMarker(arrowhead.transformed(tr))
-    plt.scatter(x2, y2, marker=m, s=0.3, color='k')
+    plt.scatter(x2, y2, marker=m, s=0.3, color=color)
 
 def calculate_arrow_offsets(x1, y1, x2, y2, nuclide_to_inch, MeV_to_inch):
     # index offset
@@ -132,7 +132,10 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
         print("WARNING: Some drawing features relies on the left-most nuclide having index zero ('0').")
     min_e = 1000.
     max_e = 0.
+    num_skip_padding = 0
     for nuclide in decay_scheme:
+        if nuclide.skip_hor_padding:
+            num_skip_padding += 1
         for level in nuclide:
             if min_e > level.energy: min_e = level.energy
             if max_e < level.energy: max_e = level.energy
@@ -145,7 +148,7 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
         y_upper_excl = np.max(exclude_y)
         y_corr = y_upper_excl - y_lower_excl
     columns = decay_scheme.num_nuclides
-    total_width = columns + (columns + 1)*hor_padding
+    total_width = (columns - num_skip_padding) + (columns + 1 - num_skip_padding)*hor_padding
     total_height = max_e - min_e + 2*ver_padding - y_corr
     fig.set_figheight(MeV_to_inch*total_height)
     fig.set_figwidth(nuclide_to_inch*total_width)
@@ -221,14 +224,15 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
                     adjust_bottom(below_text, nuclide_to_inch, MeV_to_inch, below_text_offset)
             if level.text_above:
                 if not level.broad:
-                    above_text = plt.text(x1 + 0.5 + level.text_above_x_adjust, y1 + above_text_offset + level.text_above_y_adjust, level.text_above, va='bottom', ha='center')
+                    above_text = plt.text(x1 + 0.5 + level.text_above_x_adjust, y1 + 0.5*above_text_offset/MeV_to_inch + level.text_above_y_adjust, level.text_above, va='bottom', ha='center')
                     if level.energy == max_e:
                         adjust_top(above_text, nuclide_to_inch, MeV_to_inch, above_text_offset)
                 else:
-                    above_text = plt.text(x1 + 0.5, y2 + above_text_offset + level.text_above_x_adjust, level.text_above + level.text_above_y_adjust, va='bottom', ha='center')
+                    above_text = plt.text(x1 + 0.5, y2 + 0.5*above_text_offset/MeV_to_inch + level.text_above_y_adjust, level.text_above, va='bottom', ha='center')
                     if level.upper_energy == max_e:
                         adjust_top(above_text, nuclide_to_inch, MeV_to_inch, above_text_offset)
-        padding += hor_padding# + QEC*(QEC_text_width + bracket_offset + QEC_text_offset)
+        if not nuclide.skip_hor_padding:
+            padding += hor_padding# + QEC*(QEC_text_width + bracket_offset + QEC_text_offset)
     decays = decay_scheme.decays
     for decay in decays:
         # this part should be simple, but matplotlib's standard arrows are ugly because their heads are drawn relative to data coordinates; "fancyarrowpatches" do not have this problem, but the variety of head shapes is limitied... so we draw the arrows ourselves
@@ -253,7 +257,7 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
 
         x1, y1, x2, y2 = calculate_arrow_offsets(x1, y1, x2, y2, nuclide_to_inch, MeV_to_inch)
 
-        draw_arrow(x1, y1, x2, y2)
+        draw_arrow(x1, y1, x2, y2, decay.color)
     decays_to_coordinates = decay_scheme.decays_to_coordinates
     for decay_to_coordinate in decays_to_coordinates:
         pn = decay_to_coordinate.parent_nuclide
@@ -272,7 +276,7 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
         if x1 < x2:
             x1 += 1
 
-        draw_arrow(x1, y1, x2, y2)
+        draw_arrow(x1, y1, x2, y2, color=decay_to_coordinate.color)
     level_connections = decay_scheme.level_connections
     for level_connection in level_connections:
         nuclide1 = level_connection.nuclide1
@@ -290,7 +294,7 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
         plt.plot([x1, x2], [y1, y2], ls=(1, (3, 1.3)), lw=0.5, color=level1.color)
     freetexts = decay_scheme.freetexts
     for ftext in freetexts:
-        plt.text(ftext.x, ftext.y, ftext.text, va=ftext.va, ha=ftext.ha, rotation=ftext.rotation)
+        plt.text(ftext.x, ftext.y, ftext.text, va=ftext.va, ha=ftext.ha, rotation=ftext.rotation, color=ftext.color)
     if axes_on:
         hor_sizes = [hor_padding, bracket_offset, QEC_text_offset]
         hor_sizes_strs = ["hor_padding", "bracket_offset", "QEC_text_offset"]

@@ -45,11 +45,12 @@ class decay_scheme:
 
 
 class nuclide:
-    def __init__(self, index, name):
+    def __init__(self, index, name, skip_hor_padding=False):
         if index < 0:
             raise SystemExit("code does not support nuclides with index < 0, aborting")
         self.index = index
         self.name  = name
+        self.skip_hor_padding = skip_hor_padding
         self.levels = []
         self.current_level = 0
         self.num_levels = 0
@@ -135,19 +136,21 @@ class level:
 
 
 class decay:
-    def __init__(self, parent_nuclide, parent_level, daughter_nuclide, daughter_level):
+    def __init__(self, parent_nuclide, parent_level, daughter_nuclide, daughter_level, color='k'):
         self.parent_nuclide = parent_nuclide
         self.parent_level = parent_level
         self.daughter_nuclide = daughter_nuclide
         self.daughter_level = daughter_level
+        self.color = color
 
 
 class decay_to_coordinate:
-    def __init__(self, parent_nuclide, parent_level, x, y):
+    def __init__(self, parent_nuclide, parent_level, x, y, color='k'):
         self.parent_nuclide = parent_nuclide
         self.parent_level = parent_level
         self.x = x
         self.y = y
+        self.color = color
 
 
 class level_connection:
@@ -159,11 +162,12 @@ class level_connection:
 
 
 class freetext:
-    def __init__(self, text, x, y, va='center', ha='center', rotation=0.):
+    def __init__(self, text, x, y, va='center', ha='center', rotation=0., color='k'):
         self.text = text
         self.x = x
         self.y = y
         self.va = va
         self.ha = ha
         self.rotation = rotation
+        self.color = color
 
