@@ -122,7 +122,7 @@ def calculate_arrow_offsets(x1, y1, x2, y2, nuclide_to_inch, MeV_to_inch):
     return x1, y1, x2, y2
 
 
-def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, axes_on=False, nuclide_to_inch=1., MeV_to_inch=0.25, exclude_y=None, energy_format_string="%2.3f", hor_padding=0.3, ver_padding=0.3):
+def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', dpi=100, no_save=False, axes_on=False, nuclide_to_inch=1., MeV_to_inch=0.25, exclude_y=None, energy_format_string="%2.3f", hor_padding=0.3, ver_padding=0.3):
     global_energy_format_string = energy_format_string
     found_index_zero = False
     for nuclide in decay_scheme:
@@ -320,5 +320,5 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', no_save=False, a
         plt.show()
     else:
         print("Decay scheme saved in local directory as '%s'" % figname)
-        plt.savefig(figname)
+        plt.savefig(figname, dpi=dpi)
     return fig, ax
