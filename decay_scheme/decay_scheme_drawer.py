@@ -292,6 +292,9 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', dpi=100, no_save
         y1 = level1.energy - y_corr if level1.energy > y_upper_excl else level1.energy
         y2 = level2.energy - y_corr if level2.energy > y_upper_excl else level2.energy
         plt.plot([x1, x2], [y1, y2], ls=(1, (3, 1.3)), lw=0.5, color=level1.color)
+    freearrows = decay_scheme.freearrows
+    for farrow in freearrows:
+        draw_arrow(farrow.fromx, farrow.fromy, farrow.tox, farrow.toy, color=farrow.color)
     freetexts = decay_scheme.freetexts
     for ftext in freetexts:
         plt.text(ftext.x, ftext.y, ftext.text, va=ftext.va, ha=ftext.ha, rotation=ftext.rotation, color=ftext.color)

@@ -42,6 +42,9 @@ class decay_scheme:
 
     def add_freetext(self, freetext):
         self.freetexts.append(freetext)
+    
+    def add_freearrow(self, freearrow):
+        self.freearrows.append(freearrow)
 
 
 class nuclide:
@@ -171,3 +174,10 @@ class freetext:
         self.rotation = rotation
         self.color = color
 
+class freearrow:
+    def __init__(self, fromx, fromy, tox, toy, color='k'):
+        self.fromx = fromx
+        self.fromy = fromy
+        self.tox = tox
+        self.toy = toy
+        self.color = color
