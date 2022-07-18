@@ -35,3 +35,9 @@ Another take on the 12C decay scheme: Highlight of 12N -> 12C g.s. branch.
 **Example 7**
 
 ![Example decay scheme 7](images/8he.png "Example decay scheme 7")
+
+**Example 9**
+
+Focus on gamma transitions in 20Ne in decay of 21Mg.
+
+![Example decay scheme 9](images/20ne.png "Example decay scheme 9")
