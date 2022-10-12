@@ -146,6 +146,8 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', dpi=100, no_save
     if exclude_y:
         y_lower_excl = np.min(exclude_y)
         y_upper_excl = np.max(exclude_y)
+        if y_lower_excl < 0 or y_upper_excl < 0:
+            print("WARNING: Exclusion of negative energies has not been implemented properly yet. Please ask the developer to get on with it!")
         y_corr = y_upper_excl - y_lower_excl
     columns = decay_scheme.num_nuclides
     total_width = (columns - num_skip_padding) + (columns + 1 - num_skip_padding)*hor_padding
@@ -153,7 +155,7 @@ def draw_decay_scheme(decay_scheme, figname='decay_scheme.pdf', dpi=100, no_save
     fig.set_figheight(MeV_to_inch*total_height)
     fig.set_figwidth(nuclide_to_inch*total_width)
     plt.xlim(-hor_padding, total_width - hor_padding)
-    plt.ylim(-ver_padding, total_height - ver_padding)
+    plt.ylim(min_e - ver_padding, max_e + ver_padding - y_corr)
 
     padding = 0.
     QEC_text_width = 0.
