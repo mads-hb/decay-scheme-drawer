@@ -19,7 +19,7 @@ class DecaySchemeDrawer:
     energy_format_string = "2.3f"
 
     def __init__(self):
-        data_dir = Path(__file__).parent.parent / "data"
+        data_dir = Path(__file__).parent / "data"
         arrowhead_vertices = np.loadtxt(data_dir / 'arrowhead_vertices.dat')
         arrowhead_vertices[:, 0] = arrowhead_vertices[:, 0] - np.min(arrowhead_vertices[:, 0])
         arrowhead_vertices[:, 1] = arrowhead_vertices[:, 1] - np.mean(arrowhead_vertices[:, 1]) - 0.05

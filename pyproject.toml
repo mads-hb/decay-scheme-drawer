@@ -5,7 +5,7 @@ description = "A python package to draw nuclear decay schemas"
 authors = ["Erik Asbjørn Mikkelsen Jensen <ej@phys.au.dk>", "Mads Hansen Baattrup <mads@baattrup.com>"]
 readme = "README.md"
 include = [
-	"data"
+	"decay_scheme/data"
 ]
 packages = [{include = "decay_scheme"}]
 
