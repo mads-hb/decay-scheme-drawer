@@ -90,7 +90,7 @@ class DecaySchemeDrawer:
             x2 = (nuclide.index + 1 + padding) / total_width
             for level in nuclide.levels:
                 energy_format_string = level.energy_format_string if level.energy_format_string else self.energy_format_string
-                ax.axhline(level.energy, x1, x2, ls=level.ls, lw=level.lw, color=level.color, )
+                ax.axhline(level.energy+level.energy_y_adjust, x1, x2, ls=level.ls, lw=level.lw, color=level.color, )
                 if level.broad:
                     upper = level.energy + level.width
                     lower = level.energy - level.width
