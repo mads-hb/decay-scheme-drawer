@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "decay-scheme"
-version = "0.0.0-alpha.2"
+version = "0.0.0-alpha.3"
 description = "A python package to draw nuclear decay schemas"
 authors = ["Erik Asbjørn Mikkelsen Jensen <ej@phys.au.dk>", "Mads Hansen Baattrup <mads@baattrup.com>"]
 readme = "README.md"
